@@ -10,4 +10,6 @@ import org.apache.ibatis.annotations.Param;
 public interface UserDao {
 
     User findById(@Param("userId") Integer userId);
+
+    int insertUser(User user);
 }

@@ -38,6 +38,11 @@
         <property name="mapperInterface" value="com.demo.springcmdline.dao.UserDao" />
         <property name="sqlSessionFactory" ref="sessionFactory" />
     </bean>
+
+    <bean id="logDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.demo.springcmdline.dao.LogDao" />
+        <property name="sqlSessionFactory" ref="sessionFactory" />
+    </bean>
     
 <!--    <bean id="userService" class="com.demo.springcmdline.service.UserService">-->
 <!--        <constructor-arg index="0" ref="userDao" />-->
