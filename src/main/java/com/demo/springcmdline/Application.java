@@ -34,12 +34,23 @@ public class Application {
     }
 
 
-    private ApplicationContext appContext;
+    private volatile ApplicationContext appContext;
 
     public void initialize() {
-        logger.info("application context initializing...");
-        this.appContext = new ClassPathXmlApplicationContext("beans.xml");
-        logger.info("application context initialized");
+        boolean doinit = false;
+        if (appContext == null) {
+            synchronized (this) {
+                if (appContext == null) {
+                    logger.info("application context initializing...");
+                    this.appContext = new ClassPathXmlApplicationContext("beans.xml");
+                    logger.info("application context initialized");
+                    doinit = true;
+                }
+            }
+        }
+        if (!doinit) {
+            logger.info("application context already initialized.");
+        }
     }
 
     public Object getBean(String name) {
