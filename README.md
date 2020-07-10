@@ -5,6 +5,7 @@ Demonstrate how integration Spring Framework (DI & AOP) and Mybatis (Data Access
 * Java SDK 1.8+
 * Maven
 * MYSQL Server
+* Redis Server
 
 # Database Schema
 create table if not exists user  

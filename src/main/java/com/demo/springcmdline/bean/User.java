@@ -1,10 +1,12 @@
 package com.demo.springcmdline.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Alan Huang.
  * Date: 2020-07-08 11:27
  */
-public class User {
+public class User implements Serializable {
 
     private Integer id;
     private String userName;

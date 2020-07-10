@@ -4,12 +4,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 						http://www.springframework.org/schema/context
 					    http://www.springframework.org/schema/context/spring-context-4.0.xsd
 					    http://www.springframework.org/schema/tx
-					    http://www.springframework.org/schema/tx/spring-tx.xsd">
+					    http://www.springframework.org/schema/tx/spring-tx.xsd
+					    http://www.springframework.org/schema/cache
+					    http://www.springframework.org/schema/cache/spring-cache.xsd
+">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:datasource.properties" />
@@ -30,9 +34,6 @@
         <property name="configLocation" value="classpath:mybatis.xml" />
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="defaultDataSource" />
-    </bean>
 
     <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.demo.springcmdline.dao.UserDao" />
@@ -43,11 +44,21 @@
         <property name="mapperInterface" value="com.demo.springcmdline.dao.LogDao" />
         <property name="sqlSessionFactory" ref="sessionFactory" />
     </bean>
-    
-<!--    <bean id="userService" class="com.demo.springcmdline.service.UserService">-->
-<!--        <constructor-arg index="0" ref="userDao" />-->
-<!--    </bean>-->
 
+    <!-- enable service components scan in package -->
     <context:component-scan base-package="com.demo.springcmdline.service" />
+
+    <!-- enable transaction manager and @Transaction annotation aware -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="defaultDataSource" />
+    </bean>
+
     <tx:annotation-driven />
+
+    <!-- enable cache system -->
+    <cache:annotation-driven />
+    <!-- enable configuration annotated components scan in package, -->
+    <!-- so we don't have to register redis related beans in the XML -->
+    <context:component-scan base-package="com.demo.springcmdline.config" />
+
 </beans>

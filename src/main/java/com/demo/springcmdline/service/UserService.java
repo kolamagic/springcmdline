@@ -8,6 +8,9 @@ import com.demo.springcmdline.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +29,19 @@ public class UserService {
     @Autowired
     private LogDao logDao;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Cacheable(value = "users", key = "#userId", unless = "#result == null")
     @Transactional(propagation=Propagation.REQUIRED, readOnly=true)
     public User findById(Integer userId) {
-        logger.info("userLogin called");
+        stringRedisTemplate.opsForValue().set("aaa", "111");
         User user = userDao.findById(userId);
-        logger.info("find user with " + userId + " return " + JSON.toJSONString(user));
+        logger.info("findById: find user with " + userId + " return " + JSON.toJSONString(user));
         return user;
     }
 
+    @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     @Transactional(propagation=Propagation.REQUIRED)
     public User registerUser(String username, Integer balance) {
         Log log = new Log();
