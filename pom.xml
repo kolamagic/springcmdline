@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <executable.mainClass>com.demo.springcmdline.Application</executable.mainClass>
-        <spring.framwork.version>5.2.7.RELEASE</spring.framwork.version>
+        <spring.framwork.version>5.2.20.RELEASE</spring.framwork.version>
     </properties>
 
     <dependencies>
